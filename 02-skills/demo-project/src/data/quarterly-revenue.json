@@ -1,0 +1,47 @@
+{
+  "company": "TechCorp SaaS",
+  "currency": "USD",
+  "period": "2024",
+  "quarters": [
+    {
+      "quarter": "Q1 2024",
+      "subscription_revenue": 450000,
+      "usage_revenue": 85000,
+      "professional_services": 35000,
+      "total_revenue": 570000,
+      "active_customers": 285,
+      "new_customers": 42,
+      "churned_customers": 12
+    },
+    {
+      "quarter": "Q2 2024",
+      "subscription_revenue": 520000,
+      "usage_revenue": 92000,
+      "professional_services": 28000,
+      "total_revenue": 640000,
+      "active_customers": 315,
+      "new_customers": 48,
+      "churned_customers": 18
+    },
+    {
+      "quarter": "Q3 2024",
+      "subscription_revenue": 580000,
+      "usage_revenue": 105000,
+      "professional_services": 42000,
+      "total_revenue": 727000,
+      "active_customers": 340,
+      "new_customers": 38,
+      "churned_customers": 13
+    },
+    {
+      "quarter": "Q4 2024",
+      "subscription_revenue": 635000,
+      "usage_revenue": 118000,
+      "professional_services": 55000,
+      "total_revenue": 808000,
+      "active_customers": 362,
+      "new_customers": 35,
+      "churned_customers": 13
+    }
+  ]
+}

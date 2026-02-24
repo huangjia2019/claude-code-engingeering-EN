@@ -1,0 +1,16 @@
+{
+  "name": "bugfix-demo",
+  "version": "1.0.0",
+  "description": "Shopping cart service with intentional bugs for pipeline practice",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0",
+    "tsx": "^4.15.0"
+  }
+}

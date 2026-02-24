@@ -1,0 +1,33 @@
+# order-service
+
+## Project Overview
+
+Order management microservice built with Node.js and TypeScript.
+
+## Tech Stack
+
+- Node.js 20
+- TypeScript 5.5
+- Fastify 4
+- Prisma (ORM)
+- Zod (validation)
+- Vitest (testing)
+
+## Project Structure
+
+```
+src/
+├── routes/        # HTTP route handlers
+├── services/      # Business logic
+└── repos/         # Data access layer
+tests/             # Test files
+```
+
+## Commands
+
+- `pnpm dev` — Start development server
+- `pnpm build` — Compile TypeScript
+- `pnpm test` — Run tests
+- `pnpm lint` — Run linter
+- `pnpm db:migrate` — Run database migrations
+- `pnpm db:generate` — Generate Prisma client

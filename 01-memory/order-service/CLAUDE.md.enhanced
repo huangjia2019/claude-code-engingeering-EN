@@ -1,0 +1,60 @@
+# order-service
+
+## Project Overview
+
+Order management microservice built with Node.js and TypeScript.
+
+## Tech Stack
+
+- Node.js 20
+- TypeScript 5.5 (strict mode)
+- Fastify 4
+- Prisma (ORM)
+- Zod (validation)
+- Vitest (testing)
+
+## Commands
+
+- `pnpm dev` — Start development server
+- `pnpm build` — Compile TypeScript
+- `pnpm test` — Run tests with vitest
+- `pnpm lint` — Run ESLint
+- `pnpm db:migrate` — Run Prisma migrations
+- `pnpm db:generate` — Generate Prisma client
+
+## Architecture Decisions
+
+### Why Fastify over Express
+Schema-based validation aligns with our TypeScript-first strategy.
+Fastify's built-in JSON schema validation + TypeScript generics give us
+end-to-end type safety that Express cannot match.
+**Do NOT suggest Express. Do NOT use express middleware.**
+
+### Layered Architecture
+```
+src/routes/    → Request parsing and validation ONLY
+src/services/  → ALL business logic lives here
+src/repos/     → Database access (Prisma) ONLY
+```
+- Routes MUST NOT contain business logic
+- Routes MUST NOT call Prisma directly
+- Services MUST NOT import Fastify types
+- Repos MUST NOT throw HTTP errors
+
+### Why Zod over Fastify's built-in validation
+We use Zod for request validation because it generates TypeScript types
+automatically. Define the schema once, get the type for free.
+
+## Coding Standards
+
+- Use `interface` for object shapes
+- Use `type` for unions and intersections
+- NEVER use `any` — use `unknown` with type guards
+- All async functions must have explicit return types
+- Error handling: throw domain errors in services, catch in routes
+- Test file naming: `*.test.ts` next to tests/ directory
+
+## Git Conventions
+
+- Use conventional commits: feat:, fix:, refactor:, test:, docs:
+- Always run `pnpm test` before committing

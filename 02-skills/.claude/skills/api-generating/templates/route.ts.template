@@ -1,0 +1,37 @@
+// Template: Route file for a new resource
+// Replace {{Resource}} with your resource name (PascalCase)
+// Replace {{resource}} with your resource name (camelCase)
+
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
+import { {{Resource}}Service } from '../services/{{resource}}Service';
+
+const create{{Resource}}Schema = z.object({
+  // Define your creation schema here
+});
+
+const {{resource}}IdSchema = z.object({
+  id: z.string().uuid(),
+});
+
+export async function {{resource}}Routes(app: FastifyInstance) {
+  const service = new {{Resource}}Service();
+
+  app.get('/', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const items = await service.list();
+    return reply.send(items);
+  });
+
+  app.get('/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = {{resource}}IdSchema.parse(request.params);
+    const item = await service.getById(id);
+    if (!item) return reply.status(404).send({ error: '{{Resource}} not found' });
+    return reply.send(item);
+  });
+
+  app.post('/', async (request: FastifyRequest, reply: FastifyReply) => {
+    const data = create{{Resource}}Schema.parse(request.body);
+    const item = await service.create(data);
+    return reply.status(201).send(item);
+  });
+}
