@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Emoji Match — Memory Card Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="mg-container">
+        <header class="mg-header">
+            <h1 class="mg-title">🧠 Emoji Match</h1>
+            <div class="mg-stats">
+                <div class="mg-stat">
+                    <span class="mg-stat-label">Moves</span>
+                    <span class="mg-stat-value" id="move-count">0</span>
+                </div>
+                <div class="mg-stat">
+                    <span class="mg-stat-label">Matches</span>
+                    <span class="mg-stat-value" id="match-count">0 / 8</span>
+                </div>
+                <div class="mg-stat">
+                    <span class="mg-stat-label">Time</span>
+                    <span class="mg-stat-value" id="timer">0:00</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="mg-message" id="game-message">🎯 Find all matching pairs!</div>
+
+        <div class="mg-board" id="game-board"></div>
+
+        <button class="mg-btn" id="reset-btn">🔄 New Game</button>
+    </div>
+
+    <div class="mg-overlay" id="win-overlay">
+        <div class="mg-win-card">
+            <div class="mg-win-emoji">🏆</div>
+            <h2 class="mg-win-title">You Win!</h2>
+            <p class="mg-win-message" id="win-message"></p>
+            <button class="mg-btn mg-btn-glow" id="play-again-btn">🚀 Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

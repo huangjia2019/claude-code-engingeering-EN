@@ -1,0 +1,50 @@
+# emoji-match
+
+## Project Overview
+
+Browser-based emoji memory card game. Find all matching pairs to win!
+
+## Tech Stack
+
+- HTML5
+- CSS3 (animations, 3D transforms, custom properties)
+- Vanilla JavaScript (ES6+)
+
+## Commands
+
+- `npx serve .` — Start local development server
+- Open `index.html` directly in browser (no build step needed)
+
+## ⚠️ Project Conventions — MUST follow
+
+### JavaScript Naming: snake_case ONLY
+
+All function names and variable names MUST use `snake_case`.
+Do NOT use camelCase. This is a deliberate project-wide decision.
+
+- ✅ `flip_card()`, `check_match()`, `reset_game()`, `elapsed_seconds`
+- ❌ `flipCard()`, `checkMatch()`, `resetGame()`, `elapsedSeconds`
+
+### CSS Classes: `mg-` namespace prefix
+
+ALL CSS class names MUST use the `mg-` prefix (memory-game).
+Modifiers use double-dash: `mg-card-flipped`, `mg-message-success`.
+
+- ✅ `.mg-card`, `.mg-board`, `.mg-timer`, `.mg-card-matched`
+- ❌ `.card`, `.board`, `.timer`, `.card-matched`
+
+### UI Messages: emoji-first
+
+All user-facing game messages MUST start with a thematic emoji.
+No plain text messages in the UI.
+
+- ✅ `"🎯 Find all matching pairs!"`, `"✨ Match found!"`, `"⏱️ Time: 30s"`
+- ❌ `"Find all matching pairs!"`, `"Match found!"`, `"Time: 30s"`
+
+### Color System: CSS custom properties ONLY
+
+All colors MUST use CSS custom properties defined in `:root`.
+Never hardcode color values like `#ff6b6b` or `rgb(...)`.
+
+- ✅ `color: var(--mg-primary)`, `border-color: var(--mg-success)`
+- ❌ `color: #00d4ff`, `border-color: green`
