@@ -1,0 +1,9 @@
+{
+  "name": "emoji-match",
+  "version": "1.0.0",
+  "description": "Emoji memory card game — find all matching pairs!",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --open"
+  }
+}

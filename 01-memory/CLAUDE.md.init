@@ -1,0 +1,25 @@
+# emoji-match
+
+## Project Overview
+
+Browser-based emoji memory card game. Find all matching pairs to win!
+
+## Tech Stack
+
+- HTML5
+- CSS3 (animations, 3D transforms, custom properties)
+- Vanilla JavaScript (ES6+)
+
+## Project Structure
+
+```
+index.html    — Game page
+style.css     — Styling and animations
+game.js       — Game logic and state management
+package.json  — Project metadata
+```
+
+## Commands
+
+- `npx serve .` — Start local development server
+- Open `index.html` directly in browser (no build step needed)

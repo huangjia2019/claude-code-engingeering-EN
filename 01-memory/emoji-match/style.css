@@ -1,0 +1,297 @@
+/* ============================================
+   Emoji Match — Memory Card Game
+   Dark neon theme with 3D flip animations
+   ============================================ */
+
+:root {
+    --mg-bg: #0a0a1a;
+    --mg-surface: #1a1a2e;
+    --mg-primary: #00d4ff;
+    --mg-secondary: #7c3aed;
+    --mg-accent: #ff6b9d;
+    --mg-success: #00ff88;
+    --mg-warning: #ffb347;
+    --mg-text: #e0e0ff;
+    --mg-text-dim: #6b6b8a;
+    --mg-card-bg: #16213e;
+    --mg-card-border: #2a2a4a;
+    --mg-radius: 14px;
+    --mg-transition-flip: 0.5s;
+    --mg-transition-ui: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--mg-bg);
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
+    color: var(--mg-text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ---- Container ---- */
+.mg-container {
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+}
+
+/* ---- Header ---- */
+.mg-header {
+    margin-bottom: 20px;
+}
+
+.mg-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--mg-primary), var(--mg-secondary), var(--mg-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+}
+
+.mg-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.mg-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.mg-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--mg-text-dim);
+}
+
+.mg-stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--mg-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---- Message bar ---- */
+.mg-message {
+    background: var(--mg-surface);
+    border: 1px solid var(--mg-card-border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: var(--mg-text);
+    transition: all var(--mg-transition-ui);
+    min-height: 42px;
+}
+
+.mg-message.mg-message-success {
+    border-color: var(--mg-success);
+    color: var(--mg-success);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.15);
+}
+
+.mg-message.mg-message-info {
+    border-color: var(--mg-primary);
+    color: var(--mg-primary);
+}
+
+/* ---- Board ---- */
+.mg-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+    perspective: 1000px;
+}
+
+/* ---- Card ---- */
+.mg-card {
+    aspect-ratio: 1;
+    cursor: pointer;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform var(--mg-transition-flip) ease;
+}
+
+.mg-card:hover:not(.mg-card-flipped):not(.mg-card-matched) {
+    transform: scale(1.05);
+}
+
+.mg-card:hover:not(.mg-card-flipped):not(.mg-card-matched) .mg-card-back {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.mg-card.mg-card-flipped {
+    transform: rotateY(180deg);
+}
+
+.mg-card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--mg-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transition: box-shadow var(--mg-transition-ui);
+}
+
+/* Card back (what you see before flipping) */
+.mg-card-back {
+    background: linear-gradient(135deg, var(--mg-secondary), var(--mg-accent));
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.8rem;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+}
+
+.mg-card-back::after {
+    content: '?';
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 2rem;
+}
+
+/* Card front (the emoji) */
+.mg-card-front {
+    background: var(--mg-card-bg);
+    border: 2px solid var(--mg-primary);
+    transform: rotateY(180deg);
+    font-size: 2.8rem;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+/* Matched card */
+.mg-card.mg-card-matched .mg-card-front {
+    border-color: var(--mg-success);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    animation: mg-match-pulse 0.6s ease;
+}
+
+@keyframes mg-match-pulse {
+    0% { transform: rotateY(180deg) scale(1); }
+    50% { transform: rotateY(180deg) scale(1.1); }
+    100% { transform: rotateY(180deg) scale(1); }
+}
+
+/* ---- Button ---- */
+.mg-btn {
+    background: var(--mg-surface);
+    color: var(--mg-text);
+    border: 2px solid var(--mg-card-border);
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--mg-transition-ui);
+    letter-spacing: 0.5px;
+}
+
+.mg-btn:hover {
+    border-color: var(--mg-primary);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.mg-btn:active {
+    transform: translateY(0);
+}
+
+.mg-btn-glow {
+    border-color: var(--mg-success);
+    color: var(--mg-success);
+}
+
+.mg-btn-glow:hover {
+    border-color: var(--mg-success);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* ---- Win overlay ---- */
+.mg-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 26, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+}
+
+.mg-overlay.mg-overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mg-win-card {
+    background: var(--mg-surface);
+    border: 2px solid var(--mg-success);
+    border-radius: 20px;
+    padding: 48px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+    transform: scale(0.8);
+    transition: transform 0.4s ease;
+}
+
+.mg-overlay.mg-overlay-visible .mg-win-card {
+    transform: scale(1);
+}
+
+.mg-win-emoji {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: mg-trophy-bounce 1s ease infinite;
+}
+
+@keyframes mg-trophy-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.mg-win-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--mg-success);
+    margin-bottom: 12px;
+}
+
+.mg-win-message {
+    color: var(--mg-text-dim);
+    font-size: 1.1rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+    .mg-title { font-size: 1.6rem; }
+    .mg-board { gap: 8px; }
+    .mg-card-front { font-size: 2rem; }
+    .mg-stats { gap: 16px; }
+    .mg-win-card { padding: 32px 24px; }
+}
