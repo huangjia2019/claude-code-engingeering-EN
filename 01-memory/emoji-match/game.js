@@ -1,6 +1,5 @@
 // ============================================
 // Emoji Match — Memory Card Game
-// All functions use snake_case (project convention)
 // ============================================
 
 const EMOJI_SET = ['🚀', '💎', '🔥', '🌈', '🦊', '🐙', '⚡', '🎮'];
