@@ -1,0 +1,110 @@
+$ cd 03-subagents/multi-agent-review && claude
+
+[INIT] Scanning .claude/agents/...
+[INIT] Agent registered: security-reviewer    (tools: Read, Grep, Glob)
+[INIT] Agent registered: performance-reviewer (tools: Read, Grep, Glob)
+[INIT] Agent registered: quality-reviewer     (tools: Read, Grep, Glob)
+[INIT] Agent registered: docs-reviewer        (tools: Read, Grep, Glob)
+[INIT] Main context: 0 tokens
+
+> Use security-reviewer, performance-reviewer, quality-reviewer, and
+  docs-reviewer in parallel to review sample-code/checkout.js.
+  Then merge findings into one prioritized table.
+
+[Orchestrator] Spawning 4 sub-agents in parallel:
+  ├─ security-reviewer    → reading sample-code/checkout.js
+  ├─ performance-reviewer → reading sample-code/checkout.js
+  ├─ quality-reviewer     → reading sample-code/checkout.js
+  └─ docs-reviewer        → reading sample-code/checkout.js
+
+[Wait] 4 sub-agents running concurrently...
+  ▸ security-reviewer   read 62 lines, grep'd for: query|exec|eval|hash|secret|key|password
+  ▸ performance-reviewer read 62 lines, grep'd for: for.*query|JSON\.parse|SELECT \*|forEach
+  ▸ quality-reviewer    read 62 lines, grep'd for: TODO|FIXME|function (.{200,)|==[^=]
+  ▸ docs-reviewer       read 62 lines, grep'd for: /\*\*|@param|@returns|//.*outdated
+
+[security-reviewer  ] FINISHED · 10 findings (5 CRITICAL, 3 HIGH, 2 MED) · 3,847 tokens internal
+[performance-reviewer] FINISHED · 3 findings (2 HIGH, 1 MED) · 2,234 tokens internal
+[quality-reviewer   ] FINISHED · 6 findings (3 MAJOR, 3 MINOR) · 3,121 tokens internal
+[docs-reviewer      ] FINISHED · 3 findings (2 MAJOR, 1 MINOR) · 1,892 tokens internal
+
+[Orchestrator] Merging 22 findings into one prioritized report...
+
+> Assistant response:
+
+## Combined Review · sample-code/checkout.js
+
+### CRITICAL (immediate fix needed)
+
+| Line  | Issue                                      | Source       |
+|-------|--------------------------------------------|--------------|
+| 11    | Hardcoded API key `sk_live_...`            | security     |
+| 21    | SQL injection (userId concat in SELECT)    | security     |
+| 24    | SQL injection (cartId concat)              | security     |
+| 31    | SQL injection (productId concat in loop)   | security     |
+| 53    | SQL injection (INSERT)                     | security     |
+
+### HIGH
+
+| Line  | Issue                                      | Source       |
+|-------|--------------------------------------------|--------------|
+| 30    | N+1 — per-iteration product DB call        | performance  |
+| 51    | XSS — `${user.name}` unescaped in HTML     | security     |
+| 56-59 | Path traversal in /orders/export           | security     |
+| 9     | Hardcoded DB password `admin123`           | security     |
+| 50    | MD5 used as signing hash (use HMAC-SHA256) | security     |
+| 22    | SELECT * over-fetch                        | performance  |
+| 18    | No authentication / userId from req.query   | security     |
+| 26-49 | Function 40+ lines, 5-level nesting        | quality      |
+
+### MAJOR
+
+| Line  | Issue                                      | Source       |
+|-------|--------------------------------------------|--------------|
+| 13,55 | Missing JSDoc on exported route handlers   | docs         |
+| 41    | Magic numbers 0.85/0.9/0.95                | quality      |
+| 22    | Empty `if (err) {}` swallows DB error      | quality      |
+
+### MINOR / MED
+
+| Line  | Issue                                      | Source       |
+|-------|--------------------------------------------|--------------|
+| 47    | Cryptic field names `p`, `q`, `x`          | quality      |
+| 34    | `==` instead of `===`                      | quality      |
+| (file)| No module-level docstring                  | docs         |
+| (file)| Unbounded result sets, no LIMIT             | performance  |
+| 41    | `enriched` array built then unused         | quality      |
+| 13    | Missing @param / @returns                  | docs         |
+
+Total: **22 / 22 findings (100% coverage)**
+
+Recommended next step: invoke `bug-fixer` (Edit/Write tool) on CRITICAL
+items first, then escalate to HIGH.
+
+╔══════════════════════════════════════════════════════════╗
+║ MULTI-AGENT REVIEW · CONTEXT ISOLATION                   ║
+║                                                          ║
+║   Main conversation tokens:                              ║
+║     User message:                174 tokens              ║
+║     Sub-agent summaries (×4):    923 tokens              ║
+║     Orchestrator response:       612 tokens              ║
+║     ─────────────────────────                            ║
+║     MAIN CONTEXT TOTAL:        1,709 tokens              ║
+║                                                          ║
+║   Sub-agent INTERNAL tokens (isolated, never reach main):║
+║     security-reviewer:         3,847 tokens              ║
+║     performance-reviewer:      2,234 tokens              ║
+║     quality-reviewer:          3,121 tokens              ║
+║     docs-reviewer:             1,892 tokens              ║
+║     ─────────────────────────                            ║
+║     ISOLATED TOTAL:           11,094 tokens              ║
+║                                                          ║
+║   Total work done:            12,803 tokens              ║
+║   Main context fraction:           13.3%                 ║
+║                                                          ║
+║ ▲ 22/22 findings vs single-agent's 5/22.                 ║
+║   86.7% of the work stayed out of main context.          ║
+╚══════════════════════════════════════════════════════════╝
+
+[response: 612 tokens]
+[main context total: 1,709 tokens]

@@ -1,0 +1,54 @@
+$ mkdir -p /tmp/before-quality && cd /tmp/before-quality
+$ claude
+
+╔══════════════════════════════════════════════════════════╗
+║ Claude Code 1.x — Ready                                  ║
+║ Project: /tmp/before-quality/                            ║
+║ Hooks: 0                                                 ║
+╚══════════════════════════════════════════════════════════╝
+
+> Generate a simple Express endpoint /health that returns {"status":"ok"}. Save to server.js.
+
+[Tool call: Write file_path=/tmp/before-quality/server.js]
+✓ Tool executed successfully.
+
+Created /tmp/before-quality/server.js.
+
+$ cat server.js
+const express=require('express')
+const app=express()
+app.get( '/health',(req,res)=>{
+res.json({status:"ok"})})
+app.listen(3000)
+
+---
+
+> Now add a /version endpoint to the same file.
+
+[Tool call: Read file_path=server.js]
+[Tool call: Edit file_path=server.js ...]
+✓ Tool executed successfully.
+
+$ cat server.js
+const express=require('express')
+const app=express()
+app.get( '/health',(req,res)=>{
+res.json({status:"ok"})})
+app.get('/version',(req,res)=>{res.json({version:"1.0"})})
+app.listen(3000)
+
+╔══════════════════════════════════════════════════════════╗
+║ DAMAGE WITHOUT HOOK                                      ║
+║                                                          ║
+║   - Mixed quote styles: ' vs "                           ║
+║   - No semicolons (or random)                            ║
+║   - Inconsistent spacing in args                         ║
+║   - Multi-line callback collapsed to one line            ║
+║   - Future edits compound the mess (Claude reads the     ║
+║     ugly file, learns 'this is the style'，               ║
+║     and writes more of it)                               ║
+║                                                          ║
+║ ▼ Reminding Claude in the system prompt 'use prettier    ║
+║   defaults' has no permanent effect.                     ║
+║   The fix is post-condition enforcement.                 ║
+╚══════════════════════════════════════════════════════════╝

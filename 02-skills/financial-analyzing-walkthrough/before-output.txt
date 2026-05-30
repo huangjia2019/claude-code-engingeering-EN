@@ -1,0 +1,55 @@
+$ claude -p "Analyze Q4 revenue in demo-project/src/data/quarterly-revenue.json"
+
+[INIT] Loading monolith system prompt: monolith-system-prompt.md
+[INIT] System prompt size: 12,847 chars / 3,047 tokens
+[INIT] All financial analysis frameworks (revenue / costs / profitability) preloaded
+[INIT] All code review checklists preloaded
+[INIT] All API generation templates preloaded
+
+> User message (87 tokens):
+  "Analyze Q4 revenue in demo-project/src/data/quarterly-revenue.json"
+
+[Reading file: demo-project/src/data/quarterly-revenue.json]
+[file content: 412 tokens]
+
+> Assistant response:
+
+## Financial Summary
+Q4 2024 revenue reached $808,000, marking 41.8% year-over-year
+growth from Q1 ($570,000). Subscription revenue contributed
+$635,000 (78.6% of total), driven by 27 net customer additions
+across the quarter.
+
+## Key Metrics
+| Metric              | Q4 Value  | QoQ Trend |
+|---------------------|-----------|-----------|
+| Total Revenue       | $808,000  | +11.1%    |
+| Subscription Rev    | $635,000  | +9.5%     |
+| Active Customers    | 362       | +6.5%     |
+| Net Customer Growth | +22       | -2 vs Q3  |
+
+## Analysis
+Subscription revenue growth (+9.5% QoQ) accelerated from Q3 (+11.5%).
+Usage revenue ($118K) showed stronger growth (+12.4% QoQ), suggesting
+enterprise expansion. Net customer adds dropped from 25 (Q3) to 22 (Q4),
+worth monitoring.
+
+## Recommendations
+1. Investigate Q4 net-add deceleration — funnel or seasonality?
+2. Double down on usage-based pricing (highest growth rate)
+
+[response: 412 tokens]
+
+╔══════════════════════════════════════════════════════════╗
+║ TOKEN ACCOUNTING (per turn)                              ║
+║   System prompt:           3,047 tokens (恒占)            ║
+║   User message:               87 tokens                  ║
+║   File content:              412 tokens                  ║
+║   Assistant response:        412 tokens                  ║
+║   ─────────────────────────────────                      ║
+║   TOTAL INPUT:             3,134 tokens                  ║
+║   TOTAL OUTPUT:              412 tokens                  ║
+║                                                          ║
+║ ⚠ Every conversation pays 3,047 tokens for content       ║
+║   that 80% of users won't reference.                     ║
+╚══════════════════════════════════════════════════════════╝

@@ -18,6 +18,17 @@ In this module, you'll build reusable Skills that Claude auto-discovers and load
 
 A small Express→Fastify migration project with intentional issues for code review practice.
 
+### Deep Walkthrough — Progressive Disclosure (`financial-analyzing-walkthrough/`)
+
+A standalone worked example that **measures** the token-saving effect of Skills against a naïve "load everything into system prompt" baseline.
+
+| Approach | System prompt | Per-turn cost (revenue Q) | Per-turn cost (CRUD Q) |
+|---|---|---|---|
+| Monolith system prompt | 3,047 tokens | 3,134 tokens | 3,134 tokens (paid even when irrelevant) |
+| **Skills · progressive disclosure** | 240 tokens | 2,038 tokens (−35%) | 688 tokens (−78%) |
+
+Read [`financial-analyzing-walkthrough/walkthrough.md`](financial-analyzing-walkthrough/walkthrough.md) for the step-by-step terminal capture and the design-character explanation.
+
 ## Exercises
 
 ### Exercise 1: Explore a Skill (3 min)

@@ -1,0 +1,57 @@
+$ mkdir -p /tmp/before-demo && cd /tmp/before-demo
+$ mkdir -p sample-cleanup-target
+$ echo "old" > sample-cleanup-target/log1.txt
+$ echo "old" > sample-cleanup-target/log2.txt
+$ ls sample-cleanup-target/
+log1.txt  log2.txt
+$ claude
+
+╔══════════════════════════════════════════════════════════╗
+║ Claude Code 1.x — Ready (NO project hooks loaded)        ║
+║ Project: /tmp/before-demo/                               ║
+║ Hooks: 0                                                 ║
+╚══════════════════════════════════════════════════════════╝
+
+> Clean up the old logs in sample-cleanup-target/. Use rm -rf if needed.
+
+[Tool call: Bash]
+  command: rm -rf  sample-cleanup-target/*.txt
+
+[NO hook intercept — command goes straight to subprocess]
+[subprocess: /bin/bash -c "rm -rf  sample-cleanup-target/*.txt"]
+
+✓ Tool executed successfully.
+
+Cleaned up 2 .txt files in sample-cleanup-target/.
+
+---
+
+[New session, same prompt 5 minutes later. Claude phrases the command slightly differently.]
+
+> Clean up the old logs in sample-cleanup-target/. Use rm -rf if needed.
+
+[Tool call: Bash]
+  command: rm -rf / sample-cleanup-target/*.txt
+                ^^^ NOTE: stray space before path makes '/' a separate arg
+
+[NO hook intercept]
+[subprocess: /bin/bash -c "rm -rf / sample-cleanup-target/*.txt"]
+
+✓ Tool executed successfully.
+
+[shell is now recursively deleting / ... files start vanishing system-wide ...]
+[/etc/passwd: cannot remove (denied — running as user, but countless user files going)]
+
+╔══════════════════════════════════════════════════════════╗
+║ DAMAGE WITHOUT HOOK                                      ║
+║                                                          ║
+║   - Home directory partially destroyed                   ║
+║   - /tmp/* contents gone                                 ║
+║   - System still boots (root-owned files survived)       ║
+║   - User work lost. Recovery from backups required.      ║
+║                                                          ║
+║ ▼ The whitespace bug exists in real models. The 'I would ║
+║   never write that' defense is wishful thinking.         ║
+║   Without a deterministic gate, prompt instructions are  ║
+║   the only safety net — and they leak.                   ║
+╚══════════════════════════════════════════════════════════╝

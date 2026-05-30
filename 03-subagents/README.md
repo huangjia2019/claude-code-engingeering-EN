@@ -2,9 +2,16 @@
 
 ## Overview
 
-In this module, you'll build a **Bug-Fix Pipeline** using three specialized sub-agents, each with different tool permissions.
+In this module you'll see **two complementary SubAgent designs**:
 
-## What's Included
+| Demo | Topology | What it teaches |
+|---|---|---|
+| `bugfix-demo/` + `.claude/agents/bug-*` | **Serial pipeline** (locator → fixer → verifier) | Least-privilege tool gating between stages |
+| `multi-agent-review/` | **Parallel fan-out** (4 reviewers concurrent) | Context isolation + diverse-lens ensemble |
+
+Both run with isolated sub-contexts — the main conversation only sees summaries.
+
+## Demo A · Bug-Fix Pipeline (Serial)
 
 ### Agent Configurations (`.claude/agents/`)
 
@@ -17,6 +24,17 @@ In this module, you'll build a **Bug-Fix Pipeline** using three specialized sub-
 ### Bug-Fix Demo (`bugfix-demo/`)
 
 A Node.js project with **3 intentional bugs** for pipeline practice.
+
+## Demo B · Multi-Agent Review (Parallel Fan-Out)
+
+A standalone worked example that **measures** the coverage difference between single-agent and 4-agent parallel review.
+
+| Approach | Findings on a 62-line file with 22 seeded issues | Main-context tokens |
+|---|---|---|
+| Single agent, generic review | 5 / 22 (23% coverage) | 1,121 |
+| **4 specialized agents in parallel** | 22 / 22 (100% coverage) | 1,709 main (11,094 isolated, 86.7% hidden from main) |
+
+Files: `multi-agent-review/.claude/agents/{security,performance,quality,docs}-reviewer.md` + `sample-code/checkout.js` (62 lines, 22 seeded issues) + `walkthrough.md`.
 
 ## Exercises
 

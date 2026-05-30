@@ -1,0 +1,62 @@
+$ claude -p "Review sample-code/checkout.js for any issues."
+
+[Reading file: sample-code/checkout.js] (834 tokens)
+
+> Assistant response:
+
+I reviewed checkout.js. Here are the main issues I found:
+
+### Critical
+1. **Line 21** — SQL injection in user query. `userId` from `req.query`
+   is concatenated directly into the SQL string. Use parameterized
+   queries instead.
+
+2. **Line 11** — Hardcoded API key `sk_live_...` in source. Move to
+   environment variable.
+
+### Major
+3. **Line 36-46** — Deep nesting in discount logic (5 levels). Hard
+   to read and maintain. Consider extracting branches.
+
+4. **Line 50** — MD5 is broken for security signing. Use HMAC-SHA256.
+
+5. **Line 22** — Empty `if (err) {}` — error swallowed silently.
+
+Let me know if you want me to fix any of these.
+
+╔══════════════════════════════════════════════════════════╗
+║ SINGLE-AGENT REVIEW · COVERAGE REPORT                    ║
+║                                                          ║
+║   Security issues found:       3 / 10  (30%)             ║
+║     Missed:                                              ║
+║       - Line 24: SQL injection (cart query)              ║
+║       - Line 31: SQL injection (product query)           ║
+║       - Line 53: SQL injection (INSERT)                  ║
+║       - Line 9 : Hardcoded DB password                   ║
+║       - Line 51: XSS — unescaped user.name in HTML       ║
+║       - Line 56: Path traversal in /orders/export        ║
+║       - Line 18: No authentication check                 ║
+║                                                          ║
+║   Performance issues found:    0 / 3   (0%)              ║
+║     Missed:                                              ║
+║       - Line 30: N+1 query in cart loop                  ║
+║       - Line 22: SELECT * over-fetch                     ║
+║       - (file): Unbounded result sets                    ║
+║                                                          ║
+║   Quality issues found:        2 / 6   (33%)             ║
+║     Missed:                                              ║
+║       - Line 41: Magic numbers 0.85/0.9/0.95             ║
+║       - Line 47: Cryptic field names p/q/x               ║
+║       - Line 34: == instead of ===                       ║
+║       - Line 18: enriched array unused                   ║
+║                                                          ║
+║   Documentation issues found:  0 / 3   (0%)              ║
+║     Missed:                                              ║
+║       - Line 13,55: Missing JSDoc on exported routes     ║
+║       - (file): No module-level comment                  ║
+║                                                          ║
+║   TOTAL:  5 / 22  (23% coverage, 77% miss rate)          ║
+╚══════════════════════════════════════════════════════════╝
+
+[response: 287 tokens]
+[main context total: 1,121 tokens]

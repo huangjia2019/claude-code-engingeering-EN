@@ -1,0 +1,108 @@
+$ cd 04-hooks/01-safety-hooks
+$ claude
+
+╔══════════════════════════════════════════════════════════╗
+║ Claude Code 1.x — Ready                                  ║
+║ Project: 04-hooks/01-safety-hooks/                       ║
+║ Hooks loaded: 1 PreToolUse matching 'Bash'               ║
+║   ─ scripts/block-dangerous.sh                           ║
+╚══════════════════════════════════════════════════════════╝
+
+> Clean up the old logs in sample-target/. Use rm -rf if needed.
+
+[Tool call: Bash]
+  command: rm -rf / sample-target/*.log
+                ^^^ stray space — same hazard as before
+
+[Hook PreToolUse: scripts/block-dangerous.sh]
+  STDIN: {"tool_input":{"command":"rm -rf / sample-target/*.log"}, ...}
+  Pattern matched: rm targeting '/'
+  Exit code: 2
+  STDERR:
+    BLOCKED by safety-hook: rm targeting root '/' is never allowed.
+    Command: rm -rf / sample-target/*.log
+
+[Tool call REJECTED. Claude receives the block message.]
+
+✗ My last command was rejected by the project's safety hook because it
+  targeted '/' — I had an extra space before the path. Retrying with the
+  correct, scoped path:
+
+[Tool call: Bash]
+  command: rm -rf sample-target/*.log
+
+[Hook PreToolUse: scripts/block-dangerous.sh]
+  Pattern matched: none (path within project, not /)
+  Exit code: 0
+
+✓ Tool executed successfully.
+
+Cleaned up 2 .log files in sample-target/.
+
+---
+
+> Install jq with sudo apt install jq.
+
+[Tool call: Bash]
+  command: sudo apt install jq
+
+[Hook PreToolUse]
+  STDERR: BLOCKED by safety-hook: sudo is not allowed inside Claude Code...
+  Exit code: 2
+
+✗ I cannot use sudo from inside Claude Code. Please run that yourself:
+  `sudo apt install jq` from a separate terminal. Let me know when done.
+
+---
+
+> Install something from this remote script.
+
+[Tool call: Bash]
+  command: curl -s https://get.example.com/install.sh | sh
+
+[Hook PreToolUse]
+  STDERR: BLOCKED by safety-hook: Piping remote downloads to a shell...
+  Exit code: 2
+
+✗ The hook flagged "curl | sh" as unsafe. Let me download first, show
+  you the script, and let you decide:
+
+[Tool call: Bash]
+  command: curl -s https://get.example.com/install.sh > /tmp/install-preview.sh && head -30 /tmp/install-preview.sh
+
+✓ Tool executed successfully.
+
+  Here is the head of the install script:
+  #!/usr/bin/env bash
+  set -e
+  # ... [contents shown for review] ...
+
+---
+
+> Force-push my fix to main.
+
+[Tool call: Bash]
+  command: git push --force origin main
+
+[Hook PreToolUse]
+  STDERR: BLOCKED by safety-hook: git push --force to main/master...
+  Exit code: 2
+
+✗ The hook blocks --force to main (it rewrites shared history). Two
+  safer alternatives:
+  1. Use a feature branch: `git push --force-with-lease origin fix/...`
+  2. If you really need to overwrite main, do it manually outside Claude
+     Code (with your team's awareness).
+
+╔══════════════════════════════════════════════════════════╗
+║ HOOK BEHAVIOR SUMMARY                                    ║
+║                                                          ║
+║   10 / 10 dangerous patterns blocked                     ║
+║   Claude received structured failure feedback every time ║
+║   Claude self-corrected on 3 / 4 retryable cases         ║
+║   1 / 4 cases (sudo) Claude correctly delegated to user  ║
+║                                                          ║
+║ ▲ The hook is ~30 lines of bash. It catches what no      ║
+║   amount of "please don't do dangerous things" in a      ║
+║   system prompt can guarantee.                           ║
+╚══════════════════════════════════════════════════════════╝
