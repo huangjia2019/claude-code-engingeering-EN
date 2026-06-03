@@ -23,8 +23,7 @@ V3 PPT §4 · Demo 4 之前的理论卡点：
 ├── sample-target/              # 一个安全的清理目标（可放心 rm 内容）
 ├── walkthrough.md              # step-by-step
 ├── before-output.txt           # 无 hook 时 → 危险命令直接跑
-├── after-output.txt            # 有 hook 时 → 被拦 + 给出原因
-└── screenshots/CAPTURE.md
+└── after-output.txt            # 有 hook 时 → 被拦 + 给出原因
 ```
 
 ## 拦截规则（在 scripts/block-dangerous.sh 里）
