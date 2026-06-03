@@ -38,9 +38,8 @@ V3 PPT §4 · Demo 3 之前的理论卡点：
 详见 [walkthrough.md](walkthrough.md)。
 
 - `sample-code/checkout.js` — 一份**故意**带 4 类不同问题的支付下单代码
-- `before-output.txt` — 单 agent 通用评审（漏掉 SQL 注入 + N+1）
-- `after-output.txt` — 4 角色并行评审（4 类问题全部命中）
-- `screenshots/CAPTURE.md` — 真截图清单
+- `before-output.txt` — 单 agent 通用评审（漏掉 SQL 注入 + N+1）· **示例输出,非真实截屏**
+- `after-output.txt` — 4 角色并行评审（4 类问题全部命中）· **示例输出,非真实截屏**
 
 ## 反模式：什么时候**不**该 fan-out
 

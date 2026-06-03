@@ -37,9 +37,10 @@ Each module ships with one or two **deep walkthroughs**. Each walkthrough has:
 
 - A theory pain-point it addresses (paired with one slide in the workshop deck)
 - A `walkthrough.md` with step-by-step terminal commands
-- A `before-output.txt` (the naïve baseline)
-- An `after-output.txt` (the same task with the Claude Code mechanism applied)
-- A `screenshots/CAPTURE.md` with a capture list for live demos
+- A `before-output.txt` (the naïve baseline) — *illustrative example, not a real capture*
+- An `after-output.txt` (the same task with the Claude Code mechanism applied) — *illustrative example, not a real capture*
+
+> Outputs marked *illustrative* are hand-written to explain the contrast; run the commands live for the real terminal output.
 
 | # | Module | Demos | Pattern | Measured impact |
 |---|---|---|---|---|

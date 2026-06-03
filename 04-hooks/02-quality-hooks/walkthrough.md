@@ -177,6 +177,6 @@ quality-hook 永远 exit 0，否则 hook 变成主线工作的敌人。
 - **Q3**：什么时候 quality-hook 应该升级成 safety-hook（阻断）？
   - 答：当格式失败意味着代码不能运行（如 .py 缩进错 → 解析错），那其实不是 quality 而是 correctness 问题，应该走另一套 lint+test 的 pre-commit 检查，不是 hook
 
-## 真截图清单（路径 B）
+## 现场演示提示
 
-详见 [screenshots/CAPTURE.md](screenshots/CAPTURE.md)。
+`before-output.txt` / `after-output.txt` 为**示例输出(非真实截屏)**,仅用于排版讲解;现场以实跑的真实终端输出为准。

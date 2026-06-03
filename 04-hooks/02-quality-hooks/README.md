@@ -22,9 +22,8 @@ V3 PPT §4 · Demo 4 之前的理论卡点：
 ├── scripts/post-edit-format.sh # 调 prettier / black / shfmt
 ├── sample-files/               # 故意写丑的 .js / .py / .json
 ├── walkthrough.md
-├── before-output.txt           # 无 hook → 丑文件留盘
-├── after-output.txt            # 有 hook → 写完即整齐
-└── screenshots/CAPTURE.md
+├── before-output.txt           # 无 hook → 丑文件留盘(示例输出,非真实截屏)
+└── after-output.txt            # 有 hook → 写完即整齐(示例输出,非真实截屏)
 ```
 
 ## 支持的文件类型

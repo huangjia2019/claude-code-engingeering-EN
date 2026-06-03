@@ -1,3 +1,9 @@
+###############################################################
+# 示例输出 · ILLUSTRATIVE ONLY — 非真实终端截屏
+# 用于排版/讲解,展示"单 agent 通用评审会漏掉一半以上问题"。
+# 真实数字以现场实跑为准(实测覆盖率波动,但结论一致:漏很多)。
+###############################################################
+
 $ claude -p "Review sample-code/checkout.js for any issues."
 
 [Reading file: sample-code/checkout.js] (834 tokens)

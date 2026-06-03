@@ -160,6 +160,8 @@ Ratio: 11,094 tokens of work, only 1,709 hit main context (15.4%).
 - **Q3**：什么场景**不应该**用 4 agent fan-out？
   - 答：① 文件 < 100 行（启动开销 > 收益）② 4 个 description 高度重叠（diverse-lens 价值消失）③ 评审完后没人融合（4 份报告 dump 给用户 = 失去 context isolation 价值）
 
-## 真截图清单（路径 B）
+## 现场演示提示
 
-详见 [screenshots/CAPTURE.md](screenshots/CAPTURE.md)。
+- `before-output.txt` / `after-output.txt` 为**示例输出(非真实截屏)**,仅用于排版讲解。
+- 现场以你实跑的真实终端输出为准——本机实测 4 个角色分别命中 11 / 7 / 14 / 9 个问题,且全部拒绝越界。
+- 中文讲解稿见 [../zh/README.md](../zh/README.md)。

@@ -1,3 +1,9 @@
+###############################################################
+# 示例输出 · ILLUSTRATIVE ONLY — 非真实终端截屏
+# 用于排版/讲解。真实 Claude Code 不会逐行打印 [INIT]/banner;
+# 现场以实跑输出为准,结论一致即可。
+###############################################################
+
 $ cd 02-skills && claude
 
 [INIT] Scanning .claude/skills/ for registered skills...

@@ -33,9 +33,8 @@ V3 PPT §4 · Demo 2 之前的理论卡点：
 
 详见 [walkthrough.md](walkthrough.md)。
 
-- `before-output.txt` — 朴素方案的终端片段（system prompt 内被塞满，token 浪费）
-- `after-output.txt` — Skills 方案的终端片段（按需召回，主上下文干净）
-- `screenshots/` — 真截图位（按 CAPTURE.md 截）
+- `before-output.txt` — 朴素方案的终端片段（system prompt 内被塞满，token 浪费）· **示例输出,非真实截屏**
+- `after-output.txt` — Skills 方案的终端片段（按需召回，主上下文干净）· **示例输出,非真实截屏**
 
 ## 反模式：什么时候**不**该写成 Skill
 

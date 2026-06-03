@@ -1,3 +1,9 @@
+###############################################################
+# 示例输出 · ILLUSTRATIVE ONLY — 非真实终端截屏
+# 用于排版/讲解。真实 Claude Code 不会逐行打印 [INIT]/banner;
+# 现场以实跑输出为准,结论一致即可。
+###############################################################
+
 $ claude -p "Analyze Q4 revenue in demo-project/src/data/quarterly-revenue.json"
 
 [INIT] Loading monolith system prompt: monolith-system-prompt.md

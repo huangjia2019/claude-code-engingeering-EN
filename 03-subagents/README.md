@@ -1,5 +1,7 @@
 # Module 3: Sub-Agents — Divide and Conquer
 
+> 中文讲解稿见 [`zh/README.md`](zh/README.md)。
+
 ## Overview
 
 In this module you'll see **two complementary SubAgent designs**:
