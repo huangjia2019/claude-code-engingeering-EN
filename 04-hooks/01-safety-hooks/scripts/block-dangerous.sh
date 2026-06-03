@@ -71,8 +71,14 @@ if echo "$CMD" | grep -qE '(curl|wget)[^|]*\|[[:space:]]*(sh|bash|zsh)'; then
 fi
 
 # --- Device-level writes ---
-if echo "$CMD" | grep -qE '(>[[:space:]]*/dev/|dd[[:space:]]+.*of=/dev/)'; then
-  block "Writing to /dev/* devices is blocked."
+# Block writes to REAL devices (e.g. /dev/sda) but ALLOW the harmless
+# pseudo-devices null/stdout/stderr/tty/fd that appear in normal commands
+# (e.g. `2>/dev/null`). POSIX grep has no negative lookahead, so we extract
+# every /dev write target and block only if some target is NOT a pseudo-device.
+DEV_WRITES="$(echo "$CMD" | grep -oE '(>[[:space:]]*/dev/[A-Za-z0-9_/]+|(^|[[:space:]])of=/dev/[A-Za-z0-9_/]+)')"
+if [ -n "$DEV_WRITES" ] \
+   && echo "$DEV_WRITES" | grep -qvE '/dev/(null|stdout|stderr|tty|fd/[0-9]+)([^A-Za-z0-9_]|$)'; then
+  block "Writing to a real /dev/* device is blocked (pseudo-devices like /dev/null are fine)."
 fi
 
 # --- Permission disasters ---
