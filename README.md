@@ -1,99 +1,83 @@
-# Claude Code Engineering Workshop — Hands-On Labs
+# The Claude Code Operating Model — Code Examples
 
-Companion repository for the **Claude Code Engineering in Practice** workshop. Four self-contained modules, each pairing a theory pain-point with a runnable demo that **measures** the design's impact.
+Companion repository for **_The Claude Code Operating Model_** (Packt, 2026) by **Jia Huang** —
+*Build scalable AI coding systems with Skills, MCP, Hooks, agent orchestration, and SDK patterns.*
 
-## Step 1: Install Claude Code
+Every chapter has a directory here. The code is runnable, and it reflects the **corrected** APIs as
+of publication — where the printed text and the current SDK disagree, this repository is right.
 
-### Prerequisites
-
-- **Node.js 20+** — Check: `node --version`
-- **Python 3.10+** — Check: `python3 --version`
-- **An Anthropic API key** or **Claude Pro/Max subscription**
-
-### Install
+## Setup
 
 ```bash
+# Prerequisites: Node.js 20+, Python 3.10+, Git
 npm install -g @anthropic-ai/claude-code
-```
+claude --version
 
-### Verify
+export ANTHROPIC_API_KEY=sk-ant-...   # or sign in with a Claude subscription
 
-```bash
-claude
-```
-
-You should see the Claude Code welcome screen. If prompted, log in with your Anthropic Console account or Claude subscription.
-
-## Step 2: Clone This Repository
-
-```bash
-git clone git@github.com:huangjia2019/claude-code-engingeering-EN.git
+git clone https://github.com/huangjia2019/claude-code-engingeering-EN.git
 cd claude-code-engingeering-EN
 ```
 
-## Workshop Modules
+## Chapters
 
-Each module ships with one or two **deep walkthroughs**. Each walkthrough has:
+| Chapter | Directory | What you'll run |
+|---|---|---|
+| 1 · A Broad Perspective | [`ch01-overview/`](ch01-overview/) | Setup check; the four-layer Harness map |
+| 2 · Learning from the Past | [`ch02-memory/`](ch02-memory/) | `CLAUDE.md` before/after on a real project |
+| 3 · Teaching to Fish | [`ch03-skills/`](ch03-skills/) | Three Skills; progressive disclosure measured in tokens |
+| 4 · Divide and Conquer | [`ch04-subagents/`](ch04-subagents/) | Serial bug-fix pipeline; parallel multi-lens review |
+| 5 · From Guidelines to Guardrails | [`ch05-hooks/`](ch05-hooks/) | A hook that blocks `rm -rf`; a hook that auto-formats |
+| 6 · Connecting Everything | [`ch06-mcp/`](ch06-mcp/) | `.mcp.json` scopes; a custom MCP server |
+| 7 · Headless Mode and CI/CD | [`ch07-headless-cicd/`](ch07-headless-cicd/) | GitHub Actions, GitLab CI, Jenkins |
+| 8 · Agent SDK | [`ch08-agent-sdk/`](ch08-agent-sdk/) | Custom tools, structured output, a FastAPI service |
+| 9 · The Plugin Ecosystem | [`ch09-plugins/`](ch09-plugins/) | An installable plugin; a private marketplace |
+| 10 · From Individual to Team | [`ch10-team-practices/`](ch10-team-practices/) | Layered `CLAUDE.md`, permissions, cost, audit |
 
-- A theory pain-point it addresses (paired with one slide in the workshop deck)
-- A `walkthrough.md` with step-by-step terminal commands
-- A `before-output.txt` (the naïve baseline) — *illustrative example, not a real capture*
-- An `after-output.txt` (the same task with the Claude Code mechanism applied) — *illustrative example, not a real capture*
+## Workshop
 
-> Outputs marked *illustrative* are hand-written to explain the contrast; run the commands live for the real terminal output.
+[`workshop/`](workshop/) holds the running order for the live *Claude Code Engineering in Practice*
+workshop. It points into the chapter directories rather than duplicating them, so the labs and the
+book never drift apart.
 
-| # | Module | Demos | Pattern | Measured impact |
-|---|---|---|---|---|
-| 1 | [`01-memory/`](01-memory/) | `emoji-match/` + `CLAUDE.md.{init,enhanced}` | Project memory · onboarding | "AI knows project conventions on first turn" |
-| 2 | [`02-skills/`](02-skills/) | `demo-project/` + **`financial-analyzing-walkthrough/`** | Progressive disclosure | **−35% to −78% per-turn tokens** vs monolith prompt |
-| 3 | [`03-subagents/`](03-subagents/) | `bugfix-demo/` (serial pipeline) + **`multi-agent-review/`** (parallel fan-out) | Context isolation + diverse-lens | **23% → 100% finding coverage**, 86.7% tokens kept out of main context |
-| 4 | [`04-hooks/`](04-hooks/) | **`01-safety-hooks/`** + **`02-quality-hooks/`** | Deterministic gate (pre/post) | **10/10 dangerous patterns blocked**; auto-format across .js/.py/.json |
+## The four layers
 
-Modules and demos in **bold** are the new V3 deep walkthroughs (May 2026).
+The book's organizing idea is that an agent is a **Model** plus a **Harness**, and the Harness has
+four layers. The chapters fill them in, in order:
 
-## How to Run a Demo
+| Layer | Question | Chapters |
+|---|---|---|
+| **Context** | What does the agent know? | 1–2 |
+| **Tools** | What can it do? | 3, 4, 6 |
+| **Execution** | Where does it run? | 7, 8, 9 |
+| **Governance** | What is it allowed to do? | 5, 10 |
 
-```bash
-# Example: try the safety-hook
-cd 04-hooks/01-safety-hooks
-claude
+## Errata
 
-# Inside Claude Code:
-# > Clean up sample-target/ with rm -rf
-# (Watch the hook block the dangerous edge case, then Claude self-correct.)
-```
+The tools moved while the book was in production. Where the printed text differs from the code here,
+**the code here is correct**. The most consequential corrections:
 
-Every walkthrough.md is self-contained — no setup files needed beyond the module's own scripts.
+| Topic | Printed | Correct |
+|---|---|---|
+| Python SDK messages | `message.type == "assistant"` | `isinstance(message, AssistantMessage)` — dataclasses have no `.type`. *(TypeScript's `message.type === 'assistant'` is fine.)* |
+| `@tool` decorator | `parameters={...}` | `input_schema={...}` |
+| `ClaudeAgentOptions` | `append_system_prompt=...` | `system_prompt={"type": "preset", "preset": "claude_code", "append": ...}` |
+| `ClaudeAgentOptions` | `mcp_servers=[...]` | `mcp_servers={...}` (a dict), and there is no `no_session_persistence` |
+| Plugin hooks | flat array in `hooks.json` | nested `{"hooks": {"PreToolUse": [{"matcher", "hooks": [...]}]}}` |
+| `marketplace.json` | `repository` + `version` per entry | top-level `owner`, and `source` per entry |
+| Uninstall a plugin | `/plugin remove` | `/plugin uninstall` |
+| Headless flag | `--allowed-tools` | `--allowedTools` (camelCase) |
+| Hook blocking | any non-zero exit | **only exit code 2** blocks and returns stderr to Claude |
+| Hook input | `CLAUDE_FILE_PATH` env var | read JSON from stdin: `jq -r '.tool_input.file_path'` |
 
-## Workshop-Slide Pairing
+Found another? Please [open an issue](https://github.com/huangjia2019/claude-code-engingeering-EN/issues).
 
-| Theory slide (V3 deck) | Demo to run |
-|---|---|
-| §3 · "CLAUDE.md 三层记忆" | `01-memory/emoji-match/` |
-| §3 · "Skills 按需加载 · token 降本利器" | `02-skills/financial-analyzing-walkthrough/` |
-| §3 · "SubAgent · 上下文隔离" + "复合错误数学" | `03-subagents/multi-agent-review/` |
-| §4 · "防幻觉路径" + "5 大扩展机制" | `04-hooks/01-safety-hooks/` + `02-quality-hooks/` |
+## About the author
 
-## Quick Reference
+**Jia Huang** is an AI researcher at A*STAR, Singapore. He is the author of *Designing AI Agents*
+(Manning) and *RAG from First Principles* (Packt), and proposed the dual-axis framework for agent
+design patterns and the Pattern Selection Card.
 
-| What | Command |
-|------|---------|
-| Install Claude Code | `npm install -g @anthropic-ai/claude-code` |
-| Start Claude Code | `claude` |
-| Start in a specific dir | `claude --cwd <path>` |
-| Initialize memory | `/init` (inside Claude Code) |
-| Check version | `claude --version` |
+## License
 
-## Design Principle Behind the Demos
-
-Each demo is built to **show numbers**, not just feature checkboxes:
-
-- Skills demo measures tokens before/after
-- SubAgent demo measures finding coverage and context isolation ratio
-- Hooks demo measures block rate and graceful-degradation behavior
-
-Workshops that show "feature X exists" don't transfer; workshops that show "feature X changed my measurement by Y" do.
-
-## Workshop Presenter
-
-**Jia Huang** — *Designing AI Agents* (Manning, in production) · Claude Code Engineering in Practice
+MIT — see [LICENSE](LICENSE).

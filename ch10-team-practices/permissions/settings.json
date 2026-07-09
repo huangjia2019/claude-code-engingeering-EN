@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(npm run test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(pytest:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(curl:*)",
+      "Read(./.env)",
+      "Read(./secrets/**)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "./hooks/audit-log.sh" }]
+      }
+    ]
+  }
+}

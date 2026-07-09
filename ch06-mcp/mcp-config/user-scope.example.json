@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "ghp_replace_me" }
+    }
+  },
+
+  "_comment": "Credentialed servers belong in ~/.claude.json, not in a committed .mcp.json. To scope a credentialed server to a single project, nest it under projects.<absolute-path>.mcpServers instead of the top level."
+}

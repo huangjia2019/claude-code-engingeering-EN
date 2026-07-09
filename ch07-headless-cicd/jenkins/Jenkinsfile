@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    environment {
+        ANTHROPIC_API_KEY = credentials('anthropic-api-key')
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = '1'
+    }
+    stages {
+        stage('AI Code Review') {
+            steps {
+                sh 'npm install -g @anthropic-ai/claude-code'
+                sh '''
+                    claude -p "Review the most recent code changes, focusing on logical errors and code standards" \
+                      --output-format json \
+                      --max-turns 10 \
+                      --max-budget-usd 0.50 \
+                      --allowedTools "Read,Grep,Glob" > review.json
+                '''
+                script {
+                    def review = readJSON file: 'review.json'
+                    echo "Review result: ${review.result}"
+                    echo "Cost: \$${review.total_cost_usd}"
+                }
+            }
+        }
+    }
+}

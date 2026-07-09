@@ -1,0 +1,8 @@
+{
+  "name": "team-toolkit",
+  "version": "2.0.0",
+  "description": "Team standardized development toolkit: security scanning, review commands, and a dangerous-command guard.",
+  "author": { "name": "Our Company Engineering" },
+  "license": "MIT",
+  "keywords": ["review", "security", "hooks", "workflow"]
+}

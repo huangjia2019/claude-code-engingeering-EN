@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "app-tools": {
+      "command": "python",
+      "args": ["./custom-server/server.py"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./src"]
+    }
+  }
+}

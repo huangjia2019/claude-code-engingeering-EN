@@ -1,0 +1,19 @@
+{
+  "name": "our-company-plugins",
+  "owner": {
+    "name": "Our Company Engineering",
+    "email": "engineering@our-company.com"
+  },
+  "plugins": [
+    {
+      "name": "team-toolkit",
+      "description": "Team standardized development toolkit",
+      "source": "https://github.com/our-company/team-toolkit"
+    },
+    {
+      "name": "db-tools",
+      "description": "Database operations toolkit",
+      "source": "https://github.com/our-company/db-tools"
+    }
+  ]
+}

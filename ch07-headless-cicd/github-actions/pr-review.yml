@@ -1,0 +1,76 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Get changed files
+        id: changed
+        run: |
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+          echo "count=$(wc -l < changed.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Run review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1'
+        run: |
+          # Write the review to a file. Never interpolate multi-line model output
+          # straight into a shell or JS template literal.
+          claude -p "Review the changed files listed in changed.txt. Focus on logic errors, \
+          security issues, and code standards. Finish with exactly one line: \
+          <VERDICT>approve</VERDICT> or <VERDICT>request_changes</VERDICT>" \
+            --output-format json \
+            --max-turns 10 \
+            --max-budget-usd 0.50 \
+            --allowedTools "Read,Grep,Glob" > review.json
+
+          jq -r '.result'          review.json > review.md
+          jq -r '.total_cost_usd'  review.json > cost.txt
+          echo "Review cost: $(cat cost.txt) USD"
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        env:
+          REVIEW_BODY: ${{ github.workspace }}/review.md
+        with:
+          script: |
+            const fs = require('fs');
+            // Read from disk — a backtick or ${...} in the review body would
+            // otherwise break a template literal.
+            const body = fs.readFileSync(process.env.REVIEW_BODY, 'utf8');
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });
+
+      - name: Enforce verdict
+        run: |
+          # Exact sentinel match. Grepping for the word "critical" in prose is
+          # how a review that says "no critical issues" fails your build.
+          if grep -qF '<VERDICT>request_changes</VERDICT>' review.md; then
+            echo "::error::Claude requested changes."
+            exit 1
+          fi
+          echo "Claude approved the changes."

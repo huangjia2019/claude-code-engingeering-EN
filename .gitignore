@@ -3,3 +3,16 @@ dist/
 .env
 *.log
 .DS_Store
+
+# Personal Claude Code config — never commit (see ch10-team-practices/)
+**/.claude/settings.local.json
+CLAUDE.local.md
+
+# Demo run artifacts (scoped to repo root so they never shadow real content)
+/review.json
+/review.txt
+/run.json
+/cost.txt
+/changed.txt
+/.claude/cost.tsv
+/.claude/audit.log
